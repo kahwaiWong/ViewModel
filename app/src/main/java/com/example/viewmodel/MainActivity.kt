@@ -4,6 +4,8 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +24,14 @@ class MainActivity : AppCompatActivity() {
         //Initialise the ViewModel
         countViewModel = ViewModelProviders.of(this).get(CountViewModel::class.java)
 
+        //Add an observer to the CountViewModel
+        countViewModel.count.observe(
+            this,
+            Observer {
+                if(it.equals(4)) goodluck()
+            }
+        )
+
         textViewCount.text = countViewModel.count.value.toString()
 
         buttonPlus.setOnClickListener {
@@ -33,6 +43,13 @@ class MainActivity : AppCompatActivity() {
             countViewModel.decrement()
             textViewCount.text = countViewModel.count.value.toString()
         }
+    }
+
+    private fun goodluck() {
+        Toast.makeText(applicationContext,
+            "Good Luck!!!",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onDestroy() {
